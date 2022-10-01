@@ -69,4 +69,4 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials()); // allow credentials
 
-app.Run();
+app.Run("http://0.0.0.0:5001");
