@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
 {
     builder.WebHost.UseUrls("http://0.0.0.0:5001");
-    builder.Configuration.AddJsonFile("appsettings.json");
+    builder.Configuration.AddJsonFile("SimularmyAPI/appsettings.json");
 }
 
 // Add services to the container.
