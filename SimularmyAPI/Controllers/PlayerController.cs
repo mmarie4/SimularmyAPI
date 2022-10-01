@@ -25,7 +25,7 @@ public class PlayerController : Controller
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    [HttpGet("exists/{required:email}")]
+    [HttpGet("exists/{email:required}")]
     public async Task<ExistsResponse> Exists([FromRoute] string email)
     {
         var user = await _mediator.Send(new GetPlayerByEmailQuery(email));

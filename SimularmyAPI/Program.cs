@@ -1,22 +1,30 @@
+using Commands.RegisterPlayer;
 using Domain.Options;
 using Domain.Repositories;
+using HeroicBrawlServer.DAL.Repositories.Abstractions;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Queries.GetPlayerByEmail;
+using SimularmyAPI.Middleware;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers((options) => options.Filters.Add<ExceptionFilter>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection("SecurityOptions"));
+builder.Services.AddMediatR(typeof(RegisterPlayerCommand).Assembly);
+builder.Services.AddMediatR(typeof(GetPlayerByEmailQuery).Assembly);
 // Db context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Configure JWT authentication.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,6 +54,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       };
   });
 
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+    builder.WebHost.UseUrls("http://0.0.0.0:5001");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,4 +80,4 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials()); // allow credentials
 
-app.Run("http://0.0.0.0:5001");
+app.Run();
