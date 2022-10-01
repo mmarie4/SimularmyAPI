@@ -6,6 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Queries.GetPlayerByEmail;
 using SimularmyAPI.Middleware;
 using System.Text;
@@ -20,7 +22,16 @@ if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development
 
 // Add services to the container.
 
-builder.Services.AddControllers((options) => options.Filters.Add<ExceptionFilter>());
+builder.Services.AddControllers(options => options.Filters.Add<ExceptionFilter>())
+                .AddNewtonsoftJson(options =>
+                 {
+                     options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                     {
+                         NamingStrategy = new SnakeCaseNamingStrategy()
+                     };
+                     options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
