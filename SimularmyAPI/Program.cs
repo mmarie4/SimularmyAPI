@@ -12,6 +12,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+{
+    builder.WebHost.UseUrls("http://0.0.0.0:5001");
+    builder.Configuration.AddJsonFile("appsettings.json");
+}
+
 // Add services to the container.
 
 builder.Services.AddControllers((options) => options.Filters.Add<ExceptionFilter>());
@@ -54,8 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       };
   });
 
-if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
-    builder.WebHost.UseUrls("http://0.0.0.0:5001");
+
 
 var app = builder.Build();
 
