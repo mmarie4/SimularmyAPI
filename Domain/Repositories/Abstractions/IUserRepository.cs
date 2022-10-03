@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace HeroicBrawlServer.DAL.Repositories.Abstractions
+namespace Domain.Repositories.Abstractions
 {
     public interface IUserRepository : IBaseRepository<User>
     {

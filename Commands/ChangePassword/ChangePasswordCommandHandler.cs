@@ -1,5 +1,5 @@
-﻿using Domain.Utils;
-using HeroicBrawlServer.DAL.Repositories.Abstractions;
+﻿using Domain.Repositories.Abstractions;
+using Domain.Utils;
 using MediatR;
 
 namespace Commands.ChangePassword;

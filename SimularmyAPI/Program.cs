@@ -1,7 +1,7 @@
 using Commands.RegisterPlayer;
 using Domain.Options;
 using Domain.Repositories;
-using HeroicBrawlServer.DAL.Repositories.Abstractions;
+using Domain.Repositories.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

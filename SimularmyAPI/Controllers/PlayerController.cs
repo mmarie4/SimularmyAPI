@@ -46,8 +46,7 @@ public class PlayerController : Controller
     {
         var (user, token) = await _mediator.Send(new GetAccessTokenQuery(loginRequest.Email, loginRequest.Password));
 
-        var result = PlayerResponse.FromEntity(user, token);
-        result.Token = token;
+        var result = new PlayerResponse(user, token);
         return result;
     }
 
@@ -68,8 +67,7 @@ public class PlayerController : Controller
         if (user is null)
             throw new Exception("Couldn't create user");
 
-        var result = PlayerResponse.FromEntity(user, token);
-        result.Token = token;
+        var result = new PlayerResponse(user, token);
         return result;
     }
 

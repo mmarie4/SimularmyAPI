@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using HeroicBrawlServer.DAL.Repositories.Abstractions;
+using Domain.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories
@@ -11,8 +11,6 @@ namespace Domain.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await Entities
-                .Include(x => x.CreatedBy)
-                .Include(x => x.UpdatedBy)
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
     }

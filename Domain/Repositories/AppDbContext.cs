@@ -54,18 +54,12 @@ namespace Domain.Repositories
             entityBuilder.Property(x => x.CreatedById)
                          .HasColumnName("created_by")
                          .IsRequired();
-            entityBuilder.HasOne(x => x.CreatedBy)
-                         .WithMany()
-                         .HasForeignKey(x => x.CreatedById);
             entityBuilder.Property(x => x.UpdatedAt)
                          .HasColumnName("updated_at")
                          .IsRequired();
             entityBuilder.Property(x => x.UpdatedById)
                          .HasColumnName("updated_by")
                          .IsRequired();
-            entityBuilder.HasOne(x => x.UpdatedBy)
-                         .WithMany()
-                         .HasForeignKey(x => x.UpdatedById);
         }
     }
 }

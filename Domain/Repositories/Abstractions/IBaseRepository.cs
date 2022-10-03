@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace HeroicBrawlServer.DAL.Repositories.Abstractions
+﻿namespace Domain.Repositories.Abstractions
 {
     public interface IBaseRepository<TEntity>
     {

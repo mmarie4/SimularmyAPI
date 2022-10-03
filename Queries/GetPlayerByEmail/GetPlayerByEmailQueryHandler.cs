@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using HeroicBrawlServer.DAL.Repositories.Abstractions;
+using Domain.Repositories.Abstractions;
 using MediatR;
 
 namespace Queries.GetPlayerByEmail;
