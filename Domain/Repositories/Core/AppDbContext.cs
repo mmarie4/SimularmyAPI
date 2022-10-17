@@ -20,6 +20,7 @@ namespace Domain.Repositories.Core
         protected override void OnModelCreating(ModelBuilder builder)
         {
             MapUsers(builder);
+            MapUnits(builder);
         }
 
         private void MapUsers(ModelBuilder builder)
