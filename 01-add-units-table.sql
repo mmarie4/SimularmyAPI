@@ -1,7 +1,7 @@
 ﻿do
 $$
 begin
-	CREATE TABLE unit (
+	CREATE TABLE units (
 	    id integer not null ,
 	    name varchar not null ,
 	    stats jsonb not null
