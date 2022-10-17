@@ -1,9 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Repositories.Core
 {
@@ -21,6 +20,7 @@ namespace Domain.Repositories.Core
         {
             MapUsers(builder);
             MapUnits(builder);
+            MapArmies(builder);
         }
 
         private void MapUsers(ModelBuilder builder)
@@ -69,6 +69,21 @@ namespace Domain.Repositories.Core
                    .HasColumnName("stats")
                    .HasConversion(v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                                   v => JsonConvert.DeserializeObject<UnitStats>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ?? new UnitStats())
+                   .IsRequired();
+        }
+
+        private void MapArmies(ModelBuilder builder)
+        {
+            var entityBuilder = builder.Entity<Army>();
+            entityBuilder.ToTable("armies");
+
+            MapBaseEntityFields(entityBuilder);
+
+            entityBuilder
+                   .Property(u => u.UserUnits)
+                   .HasColumnName("units")
+                   .HasConversion(v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                                  v => JsonConvert.DeserializeObject<ICollection<UserUnit>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ?? new List<UserUnit>())
                    .IsRequired();
         }
 
