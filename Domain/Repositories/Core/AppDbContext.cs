@@ -46,6 +46,9 @@ namespace Domain.Repositories.Core
                    .Property(u => u.PasswordSalt)
                    .HasColumnName("password_salt")
                    .IsRequired();
+            entityBuilder
+                   .Property(u => u.IsAdmin)
+                   .HasColumnName("is_admin");
         }
 
         private void MapUnits(ModelBuilder builder)

@@ -29,4 +29,6 @@ public static class UnitsStore
         }
         return Units.Values;
     }
+
+    public static int Count => Units.Count;
 }

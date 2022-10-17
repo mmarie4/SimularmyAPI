@@ -1,4 +1,5 @@
-﻿using Domain.Repositories.Abstractions;
+﻿using Domain.Cache;
+using Domain.Repositories.Abstractions;
 using MediatR;
 
 namespace Queries.GetAllUnits;
@@ -15,8 +16,8 @@ public class GetAllUnitsQueryHandler : IRequestHandler<GetAllUnitsQuery, (IColle
     public async Task<(ICollection<Domain.Entities.Unit>, int)> Handle(GetAllUnitsQuery request,
                                                                 CancellationToken cancellationToken)
     {
-        var units = await _unitRepository.GetAllAsync(request.Limit, request.Offset);
-        var totalCount = await _unitRepository.CountAllAsync();
+        var units = UnitsStore.GetAll(request.Limit, request.Offset);
+        var totalCount = UnitsStore.Count;
 
         return (units, totalCount);
     }

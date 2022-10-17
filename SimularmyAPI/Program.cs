@@ -43,8 +43,8 @@ builder.Services.AddMediatR(typeof(GetPlayerByEmailQuery).Assembly);
 // Db context and repositories
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUnitRepository, UnitRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUnitRepository, UnitRepository>();
 
 // Configure JWT authentication.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -99,4 +99,10 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials()); // allow credentials
 
+// Setup units library cache from database
+var unitRepository = app.Services.CreateScope().ServiceProvider.GetService<IUnitRepository>();
+if (unitRepository != null)
+    await unitRepository.RefreshCache();
+
 app.Run();
+

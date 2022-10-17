@@ -13,48 +13,12 @@ public class UnitRepository : BaseRepository, IUnitRepository
     protected DbSet<Unit> Entities => Context.Set<Unit>();
 
     /// <summary>
-    ///     Get all entities in this repository
+    ///     Get all units from db and refreshes cache
     /// </summary>
-    /// <param name="limit">Max number of entities</param>
-    /// <param name="offset">First index of entity</param>
-    /// <returns>Collection of entities</returns>
-    public async Task<ICollection<Unit>> GetAllAsync(int? limit, int? offset)
+    /// <returns></returns>
+    public async Task RefreshCache()
     {
-        var units = UnitsStore.GetAll(limit, offset);
-        if (!units.Any())
-        {
-            if (limit.HasValue)
-            {
-                units = await Entities
-                                .Skip(offset ?? 0)
-                                .Take(limit.Value)
-                                .ToListAsync();
-            }
-            else
-            {
-                units = await Entities.ToListAsync();
-            }
-            UnitsStore.Update(units);
-            return units;
-        }
-
-        return units;
-    }
-
-    /// <summary>
-    ///     Count all entities in this repository
-    /// </summary>
-    /// <param name="limit">Max number of entities</param>
-    /// <param name="offset">First index of entity</param>
-    /// <returns>Collection of entities</returns>
-    public async Task<int> CountAllAsync()
-    {
-        var units = UnitsStore.GetAll();
-        if (!units.Any())
-        {
-            return await Entities.CountAsync();
-        }
-
-        return units.Count;
+        var units = await Entities.ToListAsync();
+        UnitsStore.Update(units);
     }
 }

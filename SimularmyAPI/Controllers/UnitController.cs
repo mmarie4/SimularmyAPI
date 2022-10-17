@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using Commands.RefreshUnitsCache;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Queries.GetAllUnits;
+using SimularmyAPI.Extensions;
 using SimularmyAPI.Models.Units;
 
 namespace SimularmyAPI.Controllers;
@@ -16,6 +18,12 @@ public class UnitController : Controller
         _mediator = mediator;
     }
 
+    /// <summary>
+    ///     Returns paginated list of units library
+    /// </summary>
+    /// <param name="limit"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<UnitCollectionResponse> GetAllAsync([FromQuery] int? limit, [FromQuery] int? offset)
     {
@@ -23,5 +31,17 @@ public class UnitController : Controller
 
         var result = new UnitCollectionResponse(units, limit, offset, totalCount);
         return result;
+    }
+
+    /// <summary>
+    ///     Refreshes cache using units in db
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("refresh")]
+    public async Task RefreshCache()
+    {
+        var userId = HttpContext.User.ExtractUserId();
+        await _mediator.Send(new RefreshUnitsCacheCommand(userId));
     }
 }
