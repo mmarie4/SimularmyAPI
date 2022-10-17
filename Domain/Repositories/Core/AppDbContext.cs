@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
-namespace Domain.Repositories
+namespace Domain.Repositories.Core
 {
     public class AppDbContext : DbContext
     {
@@ -13,6 +15,7 @@ namespace Domain.Repositories
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Unit> Units { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,25 +24,47 @@ namespace Domain.Repositories
 
         private void MapUsers(ModelBuilder builder)
         {
-            builder.Entity<User>().ToTable("users");
+            var entityBuilder = builder.Entity<User>();
+            entityBuilder.ToTable("users");
 
-            MapBaseEntityFields(builder.Entity<User>());
+            MapBaseEntityFields(entityBuilder);
 
-            builder.Entity<User>()
+            entityBuilder
                    .Property(u => u.Email)
                    .HasColumnName("email")
                    .IsRequired();
-            builder.Entity<User>()
+            entityBuilder
                    .Property(u => u.Pseudo)
                    .HasColumnName("pseudo")
                    .IsRequired();
-            builder.Entity<User>()
+            entityBuilder
                    .Property(u => u.PasswordHash)
                    .HasColumnName("password_hash")
                    .IsRequired();
-            builder.Entity<User>()
+            entityBuilder
                    .Property(u => u.PasswordSalt)
                    .HasColumnName("password_salt")
+                   .IsRequired();
+        }
+
+        private void MapUnits(ModelBuilder builder)
+        {
+            var entityBuilder = builder.Entity<Unit>();
+            entityBuilder.ToTable("units");
+
+            entityBuilder
+                   .Property(u => u.Id)
+                   .HasColumnName("id")
+                   .IsRequired();
+            entityBuilder
+                   .Property(u => u.Name)
+                   .HasColumnName("name")
+                   .IsRequired();
+            entityBuilder
+                   .Property(u => u.Stats)
+                   .HasColumnName("stats")
+                   .HasConversion(v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                                  v => JsonConvert.DeserializeObject<UnitStats>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ?? new UnitStats())
                    .IsRequired();
         }
 

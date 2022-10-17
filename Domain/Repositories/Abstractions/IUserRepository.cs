@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Repositories.Abstractions
+namespace Domain.Repositories.Abstractions;
+
+public interface IUserRepository : IEntityRepository<User>
 {
-    public interface IUserRepository : IBaseRepository<User>
-    {
-        Task<User?> GetByEmailAsync(string email);
-    }
+    Task<User?> GetByEmailAsync(string email);
 }

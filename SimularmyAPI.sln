@@ -5,16 +5,17 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimularmyAPI", "SimularmyAPI\SimularmyAPI.csproj", "{96915AAD-02AA-4CF6-906C-2955D1649FB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{4D0BF3B9-DD5D-47DF-9C01-DA7C377C9953}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{4D0BF3B9-DD5D-47DF-9C01-DA7C377C9953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "Commands\Commands.csproj", "{E59AF314-3AAC-439B-8016-724CF1EEE9C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commands", "Commands\Commands.csproj", "{E59AF314-3AAC-439B-8016-724CF1EEE9C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queries", "Queries\Queries.csproj", "{0CE4EA7E-5FFA-4F91-A9FD-A5D693E10903}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Queries", "Queries\Queries.csproj", "{0CE4EA7E-5FFA-4F91-A9FD-A5D693E10903}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{7AB238E6-69B4-43B2-878E-B0F99324B06E}"
 	ProjectSection(SolutionItems) = preProject
+		01-add-units-table.sql = 01-add-units-table.sql
 		deploy.sh = deploy.sh
-		init.sql = init.sql
+		00-init.sql = 00-init.sql
 	EndProjectSection
 EndProject
 Global

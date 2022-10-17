@@ -1,10 +1,11 @@
 ﻿using Domain.Entities;
 using Domain.Repositories.Abstractions;
+using Domain.Repositories.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    public class UserRepository : EntityRepository<User>, IUserRepository
     {
         public UserRepository(AppDbContext context) : base(context) { }
 

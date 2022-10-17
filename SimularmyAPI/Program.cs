@@ -2,6 +2,7 @@ using Commands.RegisterPlayer;
 using Domain.Options;
 using Domain.Repositories;
 using Domain.Repositories.Abstractions;
+using Domain.Repositories.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -38,10 +39,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection("SecurityOptions"));
 builder.Services.AddMediatR(typeof(RegisterPlayerCommand).Assembly);
 builder.Services.AddMediatR(typeof(GetPlayerByEmailQuery).Assembly);
-// Db context
+
+// Db context and repositories
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUnitRepository, UnitRepository>();
 
 // Configure JWT authentication.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

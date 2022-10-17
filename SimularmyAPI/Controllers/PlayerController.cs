@@ -26,6 +26,7 @@ public class PlayerController : Controller
     /// <param name="email"></param>
     /// <returns></returns>
     [HttpGet("exists/{email:required}")]
+    [ProducesResponseType(typeof(ExistsResponse), 200)]
     public async Task<ExistsResponse> Exists([FromRoute] string email)
     {
         var user = await _mediator.Send(new GetPlayerByEmailQuery(email));
@@ -42,6 +43,7 @@ public class PlayerController : Controller
     /// <param name="loginRequest"></param>
     /// <returns></returns>
     [HttpPost("login")]
+    [ProducesResponseType(typeof(PlayerResponse), 200)]
     public async Task<PlayerResponse> Login([FromBody] LoginRequest loginRequest)
     {
         var (user, token) = await _mediator.Send(new GetAccessTokenQuery(loginRequest.Email, loginRequest.Password));
@@ -56,6 +58,7 @@ public class PlayerController : Controller
     /// <param name="signUpRequest"></param>
     /// <returns></returns>
     [HttpPost("sign-up")]
+    [ProducesResponseType(typeof(PlayerResponse), 200)]
     public async Task<PlayerResponse> SignUp([FromBody] SignUpRequest signUpRequest)
     {
         signUpRequest.Validate();
@@ -71,6 +74,11 @@ public class PlayerController : Controller
         return result;
     }
 
+    /// <summary>
+    ///     Updates user's password
+    /// </summary>
+    /// <param name="changePasswordRequest"></param>
+    /// <returns></returns>
     [HttpPut("change-password")]
     [ProducesResponseType(204)]
     [Authorize]
