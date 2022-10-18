@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Infrastructure;
 using Domain.Options;
 using Domain.Repositories.Abstractions;
 using Domain.Utils;
@@ -24,7 +25,7 @@ public class RegisterPlayerCommandHandler : IRequestHandler<RegisterPlayerComman
         var existingUser = await _userRepository.GetByEmailAsync(request.Email);
         if (existingUser != null)
         {
-            throw new Exception("Email already used");
+            throw new DomainException(403, "Email already used");
         }
 
         var salt = CryptoHelpers.GenerateSalt();
@@ -36,14 +37,13 @@ public class RegisterPlayerCommandHandler : IRequestHandler<RegisterPlayerComman
             PasswordSalt = salt.ToString(),
             PasswordHash = CryptoHelpers.HashUsingPbkdf2(request.Password, salt.ToString())
         };
-        user.Init(user.Id);
 
         var token = await Task.Run(() => CryptoHelpers.GenerateToken(user,
                                                                      _securityOptions.Value.Secret,
                                                                      _securityOptions.Value.Issuer,
                                                                      _securityOptions.Value.Audience));
 
-        var result = await _userRepository.AddAsync(user);
+        var result = await _userRepository.AddAsync(user, user.Id);
         await _userRepository.SaveAsync();
 
         return (result, token);

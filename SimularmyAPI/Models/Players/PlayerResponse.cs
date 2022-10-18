@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using SimularmyAPI.Models.Base;
 
 namespace SimularmyAPI.Models.Players
 {

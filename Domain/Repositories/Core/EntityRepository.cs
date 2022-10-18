@@ -48,10 +48,12 @@ public class EntityRepository<TEntity> : BaseRepository, IEntityRepository<TEnti
     /// </summary>
     /// <param name="entity">Entity to add</param>
     /// <returns>The entity added</returns>
-    public async Task<TEntity> AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity, Guid userIdCaller)
     {
-        entity.CreatedAt = DateTime.SpecifyKind(entity.CreatedAt, DateTimeKind.Utc);
-        entity.UpdatedAt = DateTime.SpecifyKind(entity.UpdatedAt, DateTimeKind.Utc);
+        entity.CreatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        entity.CreatedById = userIdCaller;
+        entity.UpdatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        entity.UpdatedById = userIdCaller;
         var result = await Entities.AddAsync(entity);
         return result.Entity;
     }
@@ -61,10 +63,11 @@ public class EntityRepository<TEntity> : BaseRepository, IEntityRepository<TEnti
     /// </summary>
     /// <param name="entity">The entity to update</param>
     /// <returns>The updated entity</returns>
-    public Task<TEntity> Update(TEntity entity)
+    public Task<TEntity> Update(TEntity entity, Guid userIdCaller)
     {
         entity.CreatedAt = DateTime.SpecifyKind(entity.CreatedAt, DateTimeKind.Utc);
-        entity.UpdatedAt = DateTime.SpecifyKind(entity.UpdatedAt, DateTimeKind.Utc);
+        entity.UpdatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        entity.UpdatedById = userIdCaller;
         var result = Entities.Update(entity);
         return Task.FromResult(result.Entity);
     }

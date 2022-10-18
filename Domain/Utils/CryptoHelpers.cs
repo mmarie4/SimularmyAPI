@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,13 +10,19 @@ namespace Domain.Utils;
 
 public static class CryptoHelpers
 {
+    /// <summary>
+    ///     Compares input to user password
+    /// </summary>
+    /// <param name="password"></param>
+    /// <param name="user"></param>
+    /// <exception cref="Exception"></exception>
     public static void CheckPassword(string password, User user)
     {
         var passwordHash = HashUsingPbkdf2(password, user.PasswordSalt);
 
         if (user.PasswordHash != passwordHash)
         {
-            throw new Exception($"Incorrect password");
+            throw new DomainException(400, $"Incorrect password");
         }
     }
 
@@ -47,6 +54,14 @@ public static class CryptoHelpers
         return Convert.ToBase64String(randomBytes);
     }
 
+    /// <summary>
+    ///     Generates a token for a user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="secret"></param>
+    /// <param name="issuer"></param>
+    /// <param name="audience"></param>
+    /// <returns></returns>
     public static string GenerateToken(User user, string secret, string issuer, string audience)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));

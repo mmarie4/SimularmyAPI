@@ -1,14 +1,19 @@
 ﻿using Commands.UpdateArmy;
 using Domain.Entities;
+using Domain.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Queries.GetArmy;
 using SimularmyAPI.Extensions;
+using SimularmyAPI.Models.Army;
 
 namespace SimularmyAPI.Controllers;
 
 [ApiController]
 [Route("api/army")]
+[ProducesErrorResponseType(typeof(DomainException))]
+[Authorize]
 public class ArmyController : Controller
 {
     private readonly IMediator _mediator;
@@ -25,12 +30,12 @@ public class ArmyController : Controller
     /// <param name="offset"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<Army> GetArmy()
+    public async Task<ArmyResponse> GetArmy()
     {
         var userId = HttpContext.User.ExtractUserId();
         var army = await _mediator.Send(new GetArmyQuery(userId));
 
-        return army;
+        return new ArmyResponse(army);
     }
 
     /// <summary>

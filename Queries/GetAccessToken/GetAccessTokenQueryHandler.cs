@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Infrastructure;
 using Domain.Options;
 using Domain.Repositories.Abstractions;
 using Domain.Utils;
@@ -25,7 +26,7 @@ public class GetAccessTokenQueryHandler : IRequestHandler<GetAccessTokenQuery, (
 
         if (user == null)
         {
-            throw new Exception($"User not found with email {request.Email}");
+            throw new DomainException(400, $"User not found with email {request.Email}");
         }
 
         CryptoHelpers.CheckPassword(request.Password, user);

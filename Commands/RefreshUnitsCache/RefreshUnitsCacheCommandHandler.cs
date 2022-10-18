@@ -1,4 +1,5 @@
-﻿using Domain.Repositories.Abstractions;
+﻿using Domain.Infrastructure;
+using Domain.Repositories.Abstractions;
 using MediatR;
 
 namespace Commands.RefreshUnitsCache;
@@ -18,7 +19,7 @@ public class RefreshUnitsCacheCommandHandler : IRequestHandler<RefreshUnitsCache
     {
         var user = await _userRepository.GetByIdAsync(request.UserId);
         if (user?.IsAdmin != true)
-            throw new Exception("User is not authorized");
+            throw new DomainException(403, "User is not authorized");
 
         await _unitRepository.RefreshCache();
         return Unit.Value;

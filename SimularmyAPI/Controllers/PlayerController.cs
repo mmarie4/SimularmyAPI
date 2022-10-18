@@ -1,5 +1,7 @@
 using Commands.ChangePassword;
+using Commands.DeleteAccount;
 using Commands.RegisterPlayer;
+using Domain.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,7 @@ namespace SimularmyAPI.Controllers;
 
 [ApiController]
 [Route("api/players")]
+[ProducesErrorResponseType(typeof(DomainException))]
 public class PlayerController : Controller
 {
     private readonly IMediator _mediator;
@@ -68,7 +71,7 @@ public class PlayerController : Controller
                                                                            signUpRequest.Password));
 
         if (user is null)
-            throw new Exception("Couldn't create user");
+            throw new DomainException(400, "Couldn't create user");
 
         var result = new PlayerResponse(user, token);
         return result;
@@ -89,6 +92,22 @@ public class PlayerController : Controller
         var userId = HttpContext.User.ExtractUserId();
 
         await _mediator.Send(new ChangePasswordCommand(changePasswordRequest.OldPassword, changePasswordRequest.NewPassword, userId));
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Delete account
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete]
+    [ProducesResponseType(204)]
+    [Authorize]
+    public async Task<IActionResult> Delete()
+    {
+        var userId = HttpContext.User.ExtractUserId();
+
+        await _mediator.Send(new DeleteAccountCommand(userId));
 
         return NoContent();
     }

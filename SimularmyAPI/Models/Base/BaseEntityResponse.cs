@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimularmyAPI.Models
+namespace SimularmyAPI.Models.Base
 {
     public class BaseEntityResponse
     {

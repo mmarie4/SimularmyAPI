@@ -20,7 +20,7 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
 
         user.PasswordHash = CryptoHelpers.HashUsingPbkdf2(request.NewPassword, user.PasswordSalt.ToString());
 
-        var result = await _userRepository.Update(user);
+        var result = await _userRepository.Update(user, user.Id);
         await _userRepository.SaveAsync();
 
         return Unit.Value;

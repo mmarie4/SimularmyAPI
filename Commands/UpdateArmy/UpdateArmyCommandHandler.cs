@@ -26,18 +26,16 @@ public class UpdateArmyCommandHandler : IRequestHandler<UpdateArmyCommand>
                 Id = request.UserId,
                 UserUnits = request.ArmyUnits
             };
-            army.Init(request.UserId);
 
-            await _repository.AddAsync(army);
+            await _repository.AddAsync(army, request.UserId);
             await _repository.SaveAsync();
 
             return Unit.Value;
         }
 
         army.UserUnits = request.ArmyUnits;
-        army.Update(request.UserId);
 
-        await _repository.Update(army);
+        await _repository.Update(army, request.UserId);
         await _repository.SaveAsync();
 
         return Unit.Value;

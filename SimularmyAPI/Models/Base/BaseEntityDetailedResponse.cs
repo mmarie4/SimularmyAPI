@@ -1,8 +1,7 @@
-﻿namespace SimularmyAPI.Models;
+﻿namespace SimularmyAPI.Models.Base;
 
-public class BaseEntityDetailedResponse
+public class BaseEntityDetailedResponse : BaseEntityResponse
 {
-    public Guid Id { get; set; }
     public DateTime CreatedAt { get; set; }
     public Guid? CreatedBy { get; set; }
     public DateTime UpdatedAt { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace SimularmyAPI.Middleware
@@ -8,6 +9,11 @@ namespace SimularmyAPI.Middleware
     {
         public override void OnException(ExceptionContext context)
         {
+            var statusCode = 500;
+            if (context.Exception is DomainException domainException)
+            {
+                statusCode = domainException.Code;
+            }
 
             var errorMessage = context.Exception.InnerException == null
                                ? context.Exception.Message
@@ -16,7 +22,7 @@ namespace SimularmyAPI.Middleware
 
             context.Result = new ObjectResult(new ErrorResponse(errorMessage))
             {
-                StatusCode = 500,
+                StatusCode = statusCode
             };
         }
     }
