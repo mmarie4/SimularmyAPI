@@ -1,6 +1,7 @@
 ﻿using Domain.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimularmyAPI.Middleware
 {
@@ -13,6 +14,10 @@ namespace SimularmyAPI.Middleware
             if (context.Exception is DomainException domainException)
             {
                 statusCode = domainException.Code;
+            }
+            if (context.Exception is ValidationException)
+            {
+                statusCode = 400;
             }
 
             var errorMessage = context.Exception.InnerException == null

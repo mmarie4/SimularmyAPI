@@ -23,12 +23,12 @@ namespace SimularmyAPI.Models.Players
             var email = new MailAddress(Email.Trim());
             if (string.IsNullOrWhiteSpace(email.Address))
             {
-                throw new Exception("Invalid email format");
+                throw new ValidationException("Invalid email format");
             }
 
             if (Password != Password2)
             {
-                throw new Exception("Passwords don't match");
+                throw new ValidationException("Passwords don't match");
             }
         }
     }
