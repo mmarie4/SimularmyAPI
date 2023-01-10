@@ -1,5 +1,6 @@
 using Commands.ChangePassword;
 using Commands.DeleteAccount;
+using Commands.JoinMatchmakingQueue;
 using Commands.RegisterPlayer;
 using Domain.Infrastructure;
 using MediatR;
@@ -108,6 +109,22 @@ public class PlayerController : Controller
         var userId = HttpContext.User.ExtractUserId();
 
         await _mediator.Send(new DeleteAccountCommand(userId));
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Delete account
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("join-matchmaking")]
+    [ProducesResponseType(204)]
+    [Authorize]
+    public async Task<IActionResult> JoinMatchmaking([FromQuery] string connectionId)
+    {
+        var userId = HttpContext.User.ExtractUserId();
+
+        await _mediator.Send(new JoinMatchmakingQueueCommand(userId, connectionId));
 
         return NoContent();
     }

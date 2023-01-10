@@ -20,7 +20,6 @@ namespace Domain.Repositories.Core
         {
             MapUsers(builder);
             MapUnits(builder);
-            MapArmies(builder);
         }
 
         private void MapUsers(ModelBuilder builder)
@@ -31,24 +30,30 @@ namespace Domain.Repositories.Core
             MapBaseEntityFields(entityBuilder);
 
             entityBuilder
-                   .Property(u => u.Email)
-                   .HasColumnName("email")
-                   .IsRequired();
+                .Property(u => u.Email)
+                .HasColumnName("email")
+                .IsRequired();
             entityBuilder
-                   .Property(u => u.Pseudo)
-                   .HasColumnName("pseudo")
-                   .IsRequired();
+                .Property(u => u.Pseudo)
+                .HasColumnName("pseudo")
+                .IsRequired();
             entityBuilder
-                   .Property(u => u.PasswordHash)
-                   .HasColumnName("password_hash")
-                   .IsRequired();
+                .Property(u => u.PasswordHash)
+                .HasColumnName("password_hash")
+                .IsRequired();
             entityBuilder
-                   .Property(u => u.PasswordSalt)
-                   .HasColumnName("password_salt")
-                   .IsRequired();
+                .Property(u => u.PasswordSalt)
+                .HasColumnName("password_salt")
+                .IsRequired();
             entityBuilder
-                   .Property(u => u.IsAdmin)
-                   .HasColumnName("is_admin");
+                .Property(u => u.IsAdmin)
+                .HasColumnName("is_admin");
+            entityBuilder
+                .Property(u => u.Units)
+                .HasColumnName("units")
+                .HasConversion(v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                               v => JsonConvert.DeserializeObject<ICollection<UserUnit>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ?? new List<UserUnit>())
+                .IsRequired();
         }
 
         private void MapUnits(ModelBuilder builder)
@@ -65,25 +70,14 @@ namespace Domain.Repositories.Core
                    .HasColumnName("name")
                    .IsRequired();
             entityBuilder
+                   .Property(u => u.Type)
+                   .HasColumnName("type")
+                   .IsRequired();
+            entityBuilder
                    .Property(u => u.Stats)
                    .HasColumnName("stats")
                    .HasConversion(v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                                   v => JsonConvert.DeserializeObject<UnitStats>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ?? new UnitStats())
-                   .IsRequired();
-        }
-
-        private void MapArmies(ModelBuilder builder)
-        {
-            var entityBuilder = builder.Entity<Army>();
-            entityBuilder.ToTable("armies");
-
-            MapBaseEntityFields(entityBuilder);
-
-            entityBuilder
-                   .Property(u => u.UserUnits)
-                   .HasColumnName("units")
-                   .HasConversion(v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                                  v => JsonConvert.DeserializeObject<ICollection<UserUnit>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ?? new List<UserUnit>())
                    .IsRequired();
         }
 

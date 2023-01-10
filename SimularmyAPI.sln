@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{7AB238E6-69B4-43
 		deploy.sh = deploy.sh
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiplayer", "Multiplayer\Multiplayer.csproj", "{E5178D00-3055-43F5-B6CC-EE253EFA056F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0CE4EA7E-5FFA-4F91-A9FD-A5D693E10903}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CE4EA7E-5FFA-4F91-A9FD-A5D693E10903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CE4EA7E-5FFA-4F91-A9FD-A5D693E10903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5178D00-3055-43F5-B6CC-EE253EFA056F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5178D00-3055-43F5-B6CC-EE253EFA056F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5178D00-3055-43F5-B6CC-EE253EFA056F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5178D00-3055-43F5-B6CC-EE253EFA056F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

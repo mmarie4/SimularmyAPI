@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace SimularmyAPI.Models.Army;
+namespace SimularmyAPI.Models.Players;
 
 public class UserUnitResponse
 {

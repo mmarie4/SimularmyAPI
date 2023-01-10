@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Commands\Commands.csproj" />
+    <ProjectReference Include="..\Multiplayer\Multiplayer.csproj" />
     <ProjectReference Include="..\Queries\Queries.csproj" />
   </ItemGroup>
 

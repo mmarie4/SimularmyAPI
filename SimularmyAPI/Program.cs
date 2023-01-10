@@ -1,4 +1,5 @@
 using Commands.RegisterPlayer;
+using Domain.GameEngine;
 using Domain.Options;
 using Domain.Repositories;
 using Domain.Repositories.Abstractions;
@@ -7,6 +8,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Multiplayer;
+using Multiplayer.HostedServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Queries.GetPlayerByEmail;
@@ -33,6 +36,10 @@ builder.Services.AddControllers(options => options.Filters.Add<ExceptionFilter>(
                      options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                      options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                  });
+
+// SignalR
+builder.Services.AddSignalR();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,7 +52,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUnitRepository, UnitRepository>();
-builder.Services.AddTransient<IArmyRepository, ArmyRepository>();
+
+builder.Services.AddTransient<IGameEngine, GameEngine>();
+
+// Hosted Services
+builder.Services.AddHostedService<GameLoopService>();
+builder.Services.AddHostedService<MatchMakingService>();
 
 // Configure JWT authentication.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -93,6 +105,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<SimularmyHub>("/api/simularmy-hub");
 
 app.UseCors(x => x
     .AllowAnyMethod()

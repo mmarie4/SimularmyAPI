@@ -3,12 +3,19 @@ using Domain.Entities;
 using Domain.Repositories.Abstractions;
 using Domain.Repositories.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Domain.Repositories;
 
 public class UnitRepository : BaseRepository, IUnitRepository
 {
-    public UnitRepository(AppDbContext context) : base(context) { }
+    private readonly ILogger<UnitRepository> _logger;
+
+    public UnitRepository(AppDbContext context, ILogger<UnitRepository> logger)
+        : base(context)
+    {
+        _logger = logger;
+    }
 
     protected DbSet<Unit> Entities => Context.Set<Unit>();
 
@@ -20,5 +27,7 @@ public class UnitRepository : BaseRepository, IUnitRepository
     {
         var units = await Entities.ToListAsync();
         UnitsStore.Update(units);
+
+        _logger.LogInformation("{count} loaded in units cache", units.Count);
     }
 }

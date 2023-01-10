@@ -10,9 +10,6 @@ namespace Domain.Repositories
         public UserRepository(AppDbContext context) : base(context) { }
 
         public async Task<User?> GetByEmailAsync(string email)
-        {
-            return await Entities
-                .FirstOrDefaultAsync(x => x.Email == email);
-        }
+            => await Entities.FirstOrDefaultAsync(x => x.Email == email);
     }
 }

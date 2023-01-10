@@ -4,9 +4,7 @@ using Domain.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Queries.GetArmy;
 using SimularmyAPI.Extensions;
-using SimularmyAPI.Models.Army;
 
 namespace SimularmyAPI.Controllers;
 
@@ -21,21 +19,6 @@ public class ArmyController : Controller
     public ArmyController(IMediator mediator)
     {
         _mediator = mediator;
-    }
-
-    /// <summary>
-    ///     Get player's army
-    /// </summary>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <returns></returns>
-    [HttpGet]
-    public async Task<ArmyResponse> GetArmy()
-    {
-        var userId = HttpContext.User.ExtractUserId();
-        var army = await _mediator.Send(new GetArmyQuery(userId));
-
-        return new ArmyResponse(army);
     }
 
     /// <summary>
