@@ -8,11 +8,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Multiplayer;
 using Multiplayer.HostedServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Queries.GetPlayerByEmail;
+using Realtime;
+using Realtime.HostedServices;
+using Serilog;
 using SimularmyAPI.Middleware;
 using System.Text;
 
@@ -23,6 +25,13 @@ if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development
     builder.WebHost.UseUrls("http://0.0.0.0:5001");
     builder.Configuration.AddJsonFile("SimularmyAPI/appsettings.json");
 }
+
+builder.Host.UseSerilog((hostBuilderContext, services, loggerConfiguration) => {
+    loggerConfiguration
+        .MinimumLevel.Debug()
+        .Enrich.FromLogContext()
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Scope}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}");
+});
 
 // Add services to the container.
 
