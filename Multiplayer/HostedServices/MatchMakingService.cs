@@ -18,9 +18,10 @@ public class MatchMakingService : IHostedService
 
     private readonly IHubContext<SimularmyHub> _hubContext;
 
-    public MatchMakingService(IHubContext<SimularmyHub> hubContext)
+    public MatchMakingService(IHubContext<SimularmyHub> hubContext, ILogger<MatchMakingService>)
     {
         _hubContext = hubContext;
+        _logger = logger;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
