@@ -8,6 +8,7 @@ public class UnitStatsResponse
     public int Health { get; }
     public double Speed { get; }
     public double Size { get; }
+    public double AttackRange { get; }
 
     public UnitStatsResponse(UnitStats stats)
     {
@@ -15,5 +16,6 @@ public class UnitStatsResponse
         Health = stats.Health;
         Speed = stats.Speed;
         Size = stats.Size;
+        AttackRange = stats.AttackRange;
     }
 }
