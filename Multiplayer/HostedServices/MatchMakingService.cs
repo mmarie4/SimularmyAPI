@@ -18,7 +18,7 @@ public class MatchMakingService : IHostedService
 
     private readonly IHubContext<SimularmyHub> _hubContext;
 
-    public MatchMakingService(IHubContext<SimularmyHub> hubContext, ILogger<MatchMakingService>)
+    public MatchMakingService(IHubContext<SimularmyHub> hubContext, ILogger<MatchMakingService> logger)
     {
         _hubContext = hubContext;
         _logger = logger;
