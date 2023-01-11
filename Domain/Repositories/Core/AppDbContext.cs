@@ -38,6 +38,10 @@ namespace Domain.Repositories.Core
                 .HasColumnName("pseudo")
                 .IsRequired();
             entityBuilder
+                .Property(u => u.Elo)
+                .HasColumnName("elo")
+                .IsRequired();
+            entityBuilder
                 .Property(u => u.PasswordHash)
                 .HasColumnName("password_hash")
                 .IsRequired();
