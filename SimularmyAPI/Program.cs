@@ -27,7 +27,7 @@ if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development
 
 builder.Host.UseSerilog((hostBuilderContext, services, loggerConfiguration) => {
     loggerConfiguration
-        .MinimumLevel.Debug()
+        .MinimumLevel.Information()
         .Enrich.FromLogContext()
         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Scope}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}");
 });
