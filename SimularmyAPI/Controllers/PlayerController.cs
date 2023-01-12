@@ -114,7 +114,7 @@ public class PlayerController : Controller
     }
 
     /// <summary>
-    ///     Delete account
+    ///     Join matchmaking queue
     /// </summary>
     /// <returns></returns>
     [HttpPost("join-matchmaking")]
